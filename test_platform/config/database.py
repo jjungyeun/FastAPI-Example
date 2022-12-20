@@ -1,17 +1,13 @@
+from test_platform import settings
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# PostgreSQL Setting
-settings = {
-    "scheme": "postgresql://",
-    "id": "testuser",
-    "pw": "testuser!",
-    "host": "localhost:5432",
-    "db_name": "testdb"
-}
-SQLALCHEMY_DATABASE_URL = settings["scheme"] + settings["id"] + ":" + settings["pw"] + \
-                          "@" + settings["host"] + "/" + settings["db_name"]
+
+# PostgreSQL URL
+SQLALCHEMY_DATABASE_URL = settings.Rdb.scheme + settings.Rdb.id + ":" + settings.Rdb.pw + \
+                          "@" + settings.Rdb.host + "/" + settings.Rdb.db_name
+
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
