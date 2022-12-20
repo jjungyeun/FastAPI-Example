@@ -1,1 +1,2 @@
-from . import public
+from .public import *
+from .member import *
