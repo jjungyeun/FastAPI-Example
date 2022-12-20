@@ -3,7 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
 from test_platform.config.database import Base
-from test_platform.entity.public import OrderStatus, DeliveryStatus
+from test_platform.entity.schema.public import OrderStatus, DeliveryStatus
 
 
 class Member(Base):
