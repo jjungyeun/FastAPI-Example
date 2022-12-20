@@ -38,6 +38,33 @@ async def get_members(
     return response
 
 
+@app.post(
+    "/members",
+    tags=["Member"]
+)
+async def add_member(
+        member_create_in: schema.MemberCreate,
+        db: Session = Depends(get_db)
+):
+    member = Member(member_create_in.id, member_create_in.name, member_create_in.city, member_create_in.street, member_create_in.zipcode)
+    db.add(member)
+    db.commit()
+
+
 def get_address(member):
-    address = "{} {} ({})".format(member.city, member.street, member.zipcode)
+    address = ""
+    if member.city:
+        address += member.city
+
+    if member.street:
+        if address != "":
+            address += " "
+        address += member.street
+
+    if address == "":
+        address = "No address Info"
+
+    if member.zipcode:
+        address += " ({})".format(member.zipcode)
+
     return address
