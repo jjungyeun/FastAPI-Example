@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -8,14 +10,34 @@ from test_platform.entity.rdb.models import Member
 
 
 @app.get(
-    "/{member_id}",
+    "/members/{member_id}",
     tags=["Member"],
-    response_model=schema.MemberBase
+    response_model=schema.MemberBase,
+    response_model_exclude_unset=True
 )
-async def get_members(
+async def get_member_by_id(
         member_id: int,
         db: Session = Depends(get_db)
 ):
     member = db.query(Member).filter(Member.id == member_id).first()
+    return schema.MemberBase(name=member.name, address=(get_address(member)))
+
+
+@app.get(
+    "/members",
+    tags=["Member"],
+    response_model=List[schema.MemberBase]
+)
+async def get_members(
+        db: Session = Depends(get_db)
+):
+    members = db.query(Member)
+    response = []
+    for member in members:
+        response.append(schema.MemberBase(id=member.id, name=member.name, address=get_address(member)))
+    return response
+
+
+def get_address(member):
     address = "{} {} ({})".format(member.city, member.street, member.zipcode)
-    return schema.MemberBase(name=member.name, address=address)
+    return address
