@@ -2,6 +2,8 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from test_platform import app
+from test_platform.config.constants import TAG_NAME_ORDERS
+from test_platform.api import api_orders_prefix
 from test_platform.config.database import get_db
 from test_platform.entity import schema
 from test_platform.entity.rdb.models import Item, Order, Member, Delivery, OrderItem
@@ -10,8 +12,8 @@ from test_platform.entity.schema import DeliveryStatus, OrderStatus
 
 
 @app.post(
-    "/orders",
-    tags=["Order"]
+    api_orders_prefix,
+    tags=[TAG_NAME_ORDERS]
 )
 async def add_order(
         order_create_in: schema.OrderCreate,
@@ -57,8 +59,8 @@ async def add_order(
 
 
 @app.get(
-    "/orders",
-    tags=["Order"]
+    api_orders_prefix,
+    tags=[TAG_NAME_ORDERS]
 )
 async def get_orders(
         db: Session = Depends(get_db)

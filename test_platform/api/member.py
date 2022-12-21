@@ -3,7 +3,9 @@ from typing import List, Optional
 from fastapi import Depends, Query
 from sqlalchemy.orm import Session
 
+from test_platform.api import api_members_prefix
 from test_platform import app
+from test_platform.config.constants import TAG_NAME_MEMBERS
 from test_platform.config.database import get_db
 from test_platform.config.exceptions import NoMemberException
 from test_platform.entity import schema
@@ -11,8 +13,8 @@ from test_platform.entity.rdb.models import Member
 
 
 @app.get(
-    "/members/{member_id}",
-    tags=["Member"],
+    api_members_prefix + "/{member_id}",
+    tags=[TAG_NAME_MEMBERS],
     response_model=schema.MemberBase,
     response_model_exclude_unset=True
 )
@@ -25,8 +27,8 @@ async def get_member_by_id(
 
 
 @app.get(
-    "/members",
-    tags=["Member"],
+    api_members_prefix,
+    tags=[TAG_NAME_MEMBERS],
     response_model=List[schema.MemberBase]
 )
 async def get_members(
@@ -40,8 +42,8 @@ async def get_members(
 
 
 @app.post(
-    "/members",
-    tags=["Member"]
+    api_members_prefix,
+    tags=[TAG_NAME_MEMBERS]
 )
 async def add_member(
         member_create_in: schema.MemberCreate,
@@ -55,8 +57,8 @@ async def add_member(
 
 
 @app.delete(
-    "/members",
-    tags=["Member"]
+    api_members_prefix,
+    tags=[TAG_NAME_MEMBERS]
 )
 async def delete_members(
         member_ids: List[int] = Query(default=..., alias="id", desciption="id=1&member_id=2"),

@@ -1,0 +1,3 @@
+TAG_NAME_MEMBERS = 'Member'
+TAG_NAME_ITEMS = 'Item'
+TAG_NAME_ORDERS = 'Order'

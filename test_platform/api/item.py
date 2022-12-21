@@ -3,15 +3,17 @@ from typing import List
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from test_platform.api import api_items_prefix
 from test_platform import app
+from test_platform.config.constants import TAG_NAME_ITEMS
 from test_platform.config.database import get_db
 from test_platform.entity import schema
 from test_platform.entity.rdb.models import Item
 
 
 @app.get(
-    "/items",
-    tags=["Item"],
+    api_items_prefix,
+    tags=[TAG_NAME_ITEMS],
     response_model=List[schema.ItemBase]
 )
 async def get_items(
@@ -25,8 +27,8 @@ async def get_items(
 
 
 @app.post(
-    "/items",
-    tags=["Item"]
+    api_items_prefix,
+    tags=[TAG_NAME_ITEMS]
 )
 async def add_item(
         item_create_in: schema.ItemCreate,
