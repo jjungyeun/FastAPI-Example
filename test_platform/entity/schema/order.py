@@ -3,15 +3,13 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from test_platform.entity.schema import OrderStatus, DeliveryStatus
-
 
 class OrderBase(BaseModel):
     id: Optional[int]
     member_name: Optional[str]
     order_date: Optional[datetime]
-    order_status: Optional[OrderStatus]
-    delivery_status: Optional[DeliveryStatus]
+    order_status: Optional[str]
+    delivery_status: Optional[str]
     delivery_address: Optional[str]
     item_name: Optional[str]
     item_count: Optional[int]
