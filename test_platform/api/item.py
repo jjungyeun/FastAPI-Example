@@ -7,14 +7,14 @@ from test_platform.api import api_items_prefix
 from test_platform import app
 from test_platform.config.constants import TAG_NAME_ITEMS
 from test_platform.config.database import get_db
-from test_platform.entity import schema
 from test_platform.entity.rdb.models import Item
+from test_platform.entity.schema.item import ItemBase, ItemCreate
 
 
 @app.get(
     api_items_prefix,
     tags=[TAG_NAME_ITEMS],
-    response_model=List[schema.ItemBase]
+    response_model=List[ItemBase]
 )
 async def get_items(
         db: Session = Depends(get_db)
@@ -22,7 +22,7 @@ async def get_items(
     items = db.query(Item)
     response = []
     for item in items:
-        response.append(schema.ItemBase(id=item.id, name=item.name, price=item.price))
+        response.append(ItemBase(id=item.id, name=item.name, price=item.price))
     return response
 
 
@@ -31,7 +31,7 @@ async def get_items(
     tags=[TAG_NAME_ITEMS]
 )
 async def add_item(
-        item_create_in: schema.ItemCreate,
+        item_create_in: ItemCreate,
         db: Session = Depends(get_db)
 ):
     item = Item(id=item_create_in.id, name=item_create_in.name, price=item_create_in.price,
