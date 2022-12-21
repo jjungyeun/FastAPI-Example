@@ -1,6 +1,6 @@
 from sqlalchemy import Column, BigInteger, SmallInteger, String, ForeignKey, DateTime, Integer
 from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 from test_platform.config.database import Base
 from test_platform.entity.schema.public import OrderStatus, DeliveryStatus
@@ -58,7 +58,9 @@ class Item(Base):
 class OrderItem(Base):
     __tablename__ = 'order_item'
     id = Column(BigInteger, primary_key=True, index=True)
-    order_id = Column(BigInteger, ForeignKey('order.id'), nullable=False)
+    order_id = Column(BigInteger, ForeignKey('orders.id'), nullable=False)
     item_id = Column(BigInteger, ForeignKey('item.id'), nullable=False)
     order_price = Column(Integer, nullable=False)
     count = Column(Integer, nullable=False)
+
+    order = relationship('Order', backref=backref('order_item', uselist=False))
