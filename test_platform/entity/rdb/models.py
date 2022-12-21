@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger, SmallInteger, String, ForeignKey, DateTime
+from sqlalchemy import Column, BigInteger, SmallInteger, String, ForeignKey, DateTime, Integer
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -45,3 +45,20 @@ class Delivery(Base):
     status = Column(SmallInteger, default=DeliveryStatus.Ready)
     
     orders = relationship('Order', back_populates='delivery')
+
+
+class Item(Base):
+    __tablename__ = 'item'
+    id = Column(BigInteger, primary_key=True, index=True)
+    name = Column(String(30), nullable=False)
+    price = Column(Integer, nullable=False)
+    stock_quantity = Column(Integer, nullable=False)
+
+
+class OrderItem(Base):
+    __tablename__ = 'order_item'
+    id = Column(BigInteger, primary_key=True, index=True)
+    order_id = Column(BigInteger, ForeignKey('order.id'), nullable=False)
+    item_id = Column(BigInteger, ForeignKey('item.id'), nullable=False)
+    order_price = Column(Integer, nullable=False)
+    count = Column(Integer, nullable=False)
