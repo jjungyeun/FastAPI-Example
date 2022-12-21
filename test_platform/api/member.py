@@ -64,7 +64,7 @@ async def delete_members(
         member_ids: List[int] = Query(default=..., alias="id", desciption="id=1&member_id=2"),
         db: Session = Depends(get_db)
 ):
-    return await crud_member.bulk_delete(db, member_ids)
+    return crud_member.bulk_delete(db, member_ids)
 
 
 def get_address(member):
