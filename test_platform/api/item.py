@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -5,6 +7,21 @@ from test_platform import app
 from test_platform.config.database import get_db
 from test_platform.entity import schema
 from test_platform.entity.rdb.models import Item
+
+
+@app.get(
+    "/items",
+    tags=["Item"],
+    response_model=List[schema.ItemBase]
+)
+async def get_items(
+        db: Session = Depends(get_db)
+):
+    items = db.query(Item)
+    response = []
+    for item in items:
+        response.append(schema.ItemBase(id=item.id, name=item.name, price=item.price))
+    return response
 
 
 @app.post(

@@ -1,4 +1,12 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
+
+
+class ItemBase(BaseModel):
+    id: Optional[int]
+    name: Optional[str]
+    price: Optional[int]
 
 
 class ItemCreate(BaseModel):
